@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 require 'cli/ui'
 require 'faraday'
 require 'nokogiri'
@@ -102,5 +103,9 @@ class Crawler
   end
 end
 
-crawler = Crawler.new
-crawler.start
+begin
+  crawler = Crawler.new
+  crawler.start
+rescue Interrupt
+  exit
+end

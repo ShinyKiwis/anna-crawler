@@ -76,14 +76,17 @@ class Crawler
     puts "Title: #{title}"
     puts "Book Cover: #{book_img}"
     CLI::UI::Prompt.ask('Do you want to download this book ?') do |handler|
-      handler.option('yes') { |_selection| save_book(title, download_link) }
+      handler.option('yes') { |_selection| puts 'Processing to download the book' }
       handler.option('no') { |_selection| return nil }
     end
-    nil
+    CLI::UI::Spinner.spin('Downloading file') do |_spinner|
+      save_book(title, download_link)
+    end
   end
 
   def save_book(title, url)
-    File.open(title, 'wb') do |file|
+    ext = url.split('.').last
+    File.open("#{title}.#{ext}", 'wb') do |file|
       URI.open(url) do |pdf|
         file.write(pdf.read)
       end

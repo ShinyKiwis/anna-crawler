@@ -1,0 +1,23 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    cli-ui (2.2.3)
+    faraday (2.7.4)
+      faraday-net_http (>= 2.0, < 3.1)
+      ruby2_keywords (>= 0.0.4)
+    faraday-net_http (3.0.2)
+    nokogiri (1.14.3-x86_64-linux)
+      racc (~> 1.4)
+    racc (1.6.2)
+    ruby2_keywords (0.0.5)
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  cli-ui
+  faraday
+  nokogiri
+
+BUNDLED WITH
+   2.3.26

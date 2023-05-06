@@ -74,19 +74,27 @@ class Crawler
       response = Faraday.get(url)
     end
     title, book_img, download_link = retrieve_book_info(response.body)
+    ext = download_link.split('.').last
     puts "Title: #{title}"
     puts "Book Cover: #{book_img}"
+    puts "File Extension: #{ext}"
+    is_download = false
     CLI::UI::Prompt.ask('Do you want to download this book ?') do |handler|
-      handler.option('yes') { |_selection| puts 'Processing to download the book' }
-      handler.option('no') { |_selection| return nil }
+      handler.option('View book cover') { |_selection| system("feh #{book_img}") }
+      handler.option('Yes') { |_selection| is_download = true }
+      handler.option('No') { |_selection| return nil }
     end
-    CLI::UI::Spinner.spin('Downloading file') do |_spinner|
-      save_book(title, download_link)
+
+    if is_download
+      CLI::UI::Spinner.spin('Downloading file') do |_spinner|
+        save_book(title, ext, download_link)
+      end
+    else
+      download_book(url)
     end
   end
 
-  def save_book(title, url)
-    ext = url.split('.').last
+  def save_book(title, ext, url)
     File.open("#{title}.#{ext}", 'wb') do |file|
       URI.open(url) do |pdf|
         file.write(pdf.read)
